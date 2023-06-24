@@ -1,54 +1,72 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Head from 'next/head';
 import styles from '../../styles/Home.module.css';
 import { useRouter } from 'next/router'
 
-export default function Home() {
-    const router = useRouter()
-    const { id } = router.query
-    var tripName = id
-    if (id === '1') {
-        tripName = 'Mexico'
-    } else if (id === '2') {
-        tripName = 'Panevezys'
-    }
-    return (
-        <div className={styles.container}>
-            <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+export default function Trip() {
+  const [trip, setTrip] = useState();
+  // Get raw data
+  const router = useRouter()
+  const tripId = router.query.id
 
-            <main>
-                <h1 className={styles.title}>
-                    Welcome to <a href="https://nextjs.org">Trip {tripName}!</a>
-                </h1>
+  const fetchTrip = async () => {
+    var url = `https://64932e05428c3d2035d174ed.mockapi.io/api/v1/trips/${tripId}`
+    console.log(url)
+    const response = await axios.get(url);
+    console.log("response", response);
 
-                <p className={styles.description}>
-                    Get started by editing <code>pages/index.js</code>
-                </p>
+    setTrip(response.data)
+  };
 
-                <div className={styles.grid}>
-                    <a
-                        href="/"
-                        className={styles.card}
-                    >
-                        <h3>Back &rarr;</h3>
-                    </a>
-                </div>
-            </main>
+  useEffect(() => {
+    tripId && fetchTrip();
+  }, [tripId]);
 
-            <footer>
-                <a
-                    href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Powered by{' '}
-                    <img src="/vercel.svg" alt="Vercel" className={styles.logo} />
-                </a>
-            </footer>
+  // Process data
 
-            <style jsx>{`
+  // Display data
+  return (
+    <div className={styles.container}>
+      <Head>
+        <title>Create Next App</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main>
+        {trip && (
+          <div>
+            <h1 className={styles.title}>
+              Welcome to <a href="https://nextjs.org">{trip.destination}!</a>
+            </h1>
+            <p className={styles.description}>
+              <code>{JSON.stringify(trip)}</code>
+            </p>
+
+            <div className={styles.grid}>
+              <a
+                href="/"
+                className={styles.card}
+              >
+                <h3>Back &rarr;</h3>
+              </a>
+            </div>
+          </div>
+        )}
+      </main>
+
+      <footer>
+        <a
+          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Powered by{' '}
+          <img src="/vercel.svg" alt="Vercel" className={styles.logo} />
+        </a>
+      </footer>
+
+      <style jsx>{`
         main {
           padding: 5rem 0;
           flex: 1;
@@ -85,7 +103,7 @@ export default function Home() {
         }
       `}</style>
 
-            <style jsx global>{`
+      <style jsx global>{`
         html,
         body {
           padding: 0;
@@ -98,6 +116,6 @@ export default function Home() {
           box-sizing: border-box;
         }
       `}</style>
-        </div>
-    )
+    </div>
+  )
 }
