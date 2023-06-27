@@ -27,30 +27,30 @@ const Trip = () => {
 
   // Display data
   return (
-      <main>
-        {/*when runs first time skip this part of html (because "trip" is still empty).
+    <main>
+      {/*when runs first time skip this part of html (because "trip" is still empty).
         On second pass we will have "trip" and this html will get printed.*/}
-        {is_data_loaded && (
-          <div>
-            <h1 className={styles.title}>
-              Welcome to <a href={trip.image_url}>{trip.destination}!</a>
-            </h1>
-            <img src={trip.image_url}></img>
-            <p className={styles.description}>
-              <code>{JSON.stringify(trip)}</code>
-            </p>
+      {is_data_loaded && (
+        <div>
+          <h1 className={styles.title}>
+            Welcome to <a href={trip.image_url}>{trip.destination}!</a>
+          </h1>
+          <img src={trip.image_url}></img>
+          <p className={styles.description}>
+            <code>{JSON.stringify(trip)}</code>
+          </p>
 
-            <div className={styles.grid}>
-              <a
-                href="/"
-                className={styles.card}
-              >
-                <h3>Back &rarr;</h3>
-              </a>
-            </div>
+          <div className={styles.grid}>
+            <a
+              href="/"
+              className={styles.card}
+            >
+              <h3>Back &rarr;</h3>
+            </a>
           </div>
-        )}
-      </main>
+        </div>
+      )}
+    </main>
   )
 }
 
